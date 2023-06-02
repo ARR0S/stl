@@ -6,12 +6,11 @@ template<class T>
 class List {
 public:
     struct Node {
-        T data;
-        Node* next;
-        Node(const T& d, Node* n = nullptr)
-            : data(d), next(n)
-        {
-        }
+        T m_data;
+        Node* m_next;
+        Node(const T& p_d, Node* p_n = nullptr)
+            : m_data(p_d), m_next(p_n)
+        {}
     };
 
     // Итератор для класса List
@@ -21,27 +20,21 @@ public:
         using pointer = T*;
         using reference = T&;
         Iterator();
-        Iterator(Node* node, Node* tail, Node* head);
+        Iterator(Node* p_node, Node* p_tail, Node* p_head);
         reference operator*() const;
-
         pointer operator->() const;
-
         Iterator operator++();
-
         Iterator operator++(int);
         Iterator& operator--();
-
         Iterator operator--(int);
-
-        bool operator==(const Iterator& other) const;
-
-        bool operator!=(const Iterator& other) const;
-        typename List<T>::Iterator& operator=(const Iterator& other);
+        bool operator==(const Iterator& p_other) const;
+        bool operator!=(const Iterator& p_other) const;
+        typename List<T>::Iterator& operator=(const Iterator& p_other);
 
     private:
-        Node* current;
-        Node* tail;
-        Node* head; // Добавленное поле
+        Node* m_current;
+        Node* m_tail;
+        Node* m_head;
     };
 
 public:
@@ -49,176 +42,204 @@ public:
     ~List();
     bool empty() const;
     size_t size() const;
-    void push_back(const T& value);
-    Node* find(const T& value) const;
-    void remove(const T& value);
-
+    void push_back(const T& p_value);
+    Node* find(const T& p_value) const;
+    void remove(const T& p_value);
     Iterator begin() const;
-
     Iterator end() const;
 
 private:
-    Node* head;
-    Node* tail;
-    size_t listSize;
+    Node* m_head;
+    Node* m_tail;
+    size_t m_listSize;
 };
 
 template<class T>
 List<T>::List()
-    : head(nullptr), tail(nullptr), listSize(0)
-{
-}
+    : m_head(nullptr), m_tail(nullptr), m_listSize(0)
+{}
 
 template<class T>
-List<T>::~List() {
-    while (head != nullptr) {
-        Node* temp = head;
-        head = head->next;
+List<T>::~List() 
+{
+    while (m_head != nullptr) 
+    {
+        Node* temp = m_head;
+        m_head = m_head->m_next;
         delete temp;
     }
 }
 
 template<class T>
-bool List<T>::empty() const {
-    return listSize == 0;
+bool List<T>::empty() const 
+{
+    return m_listSize == 0;
 }
 
 template<class T>
-size_t List<T>::size() const {
-    return listSize;
+size_t List<T>::size() const 
+{
+    return m_listSize;
 }
 
 template<class T>
-void List<T>::push_back(const T& value) {
-    Node* newNode = new Node(value);
+void List<T>::push_back(const T& p_value) 
+{
+    Node* newNode = new Node(p_value);
 
-    if (empty()) {
-        head = tail = newNode;
+    if (empty()) 
+    {
+        m_head = m_tail = newNode;
     }
-    else {
-        tail->next = newNode;
-        tail = newNode;
+    else 
+    {
+        m_tail->m_next = newNode;
+        m_tail = newNode;
     }
 
-    listSize++;
+    m_listSize++;
 }
 
 template<class T>
-typename List<T>::Node* List<T>::find(const T& value) const {
-    Node* current = head;
-    while (current != nullptr) {
-        if (current->data == value)
+typename List<T>::Node* List<T>::find(const T& p_value) const 
+{
+    Node* current = m_head;
+    while (current != nullptr) 
+    {
+        if (current->m_data == p_value)
             return current;
-        current = current->next;
+        current = current->m_next;
     }
     return nullptr;
 }
 
 template<class T>
-void List<T>::remove(const T& value) {
-    Node* current = head;
+void List<T>::remove(const T& p_value) 
+{
+    Node* current = m_head;
     Node* previous = nullptr;
 
-    while (current != nullptr) {
-        if (current->data == value) {
-            if (previous == nullptr) {
-                // Удаляемый элемент - голова списка
-                head = current->next;
+    while (current != nullptr) 
+    {
+        if (current->m_data == p_value) 
+        {
+            if (previous == nullptr) 
+            {
+                m_head = current->m_next;
             }
-            else {
-                // Удаляемый элемент - не голова списка
-                previous->next = current->next;
+            else 
+            {
+                previous->m_next = current->m_next;
             }
-
-            if (current == tail) {
-                // Удаляемый элемент - хвост списка
-                tail = previous;
+            if (current == m_tail) 
+            {
+                m_tail = previous;
             }
-
             delete current;
-            listSize--;
+            m_listSize--;
             return;
         }
-
         previous = current;
-        current = current->next;
+        current = current->m_next;
     }
 }
 
 template<class T>
 List<T>::Iterator::Iterator()
-    : current(nullptr), tail(nullptr), head(nullptr)
+    : m_current(nullptr), m_tail(nullptr), m_head(nullptr)
+{}
+
+template<class T>
+List<T>::Iterator::Iterator(Node* p_node, Node* p_tail, Node* p_head)
+    : m_current(p_node), m_tail(p_tail), m_head(p_head)
+{}
+
+template<class T>
+List<T>::Iterator::reference List<T>::Iterator::operator*() const 
 {
+    return m_current->m_data;
 }
 
 template<class T>
-List<T>::Iterator::Iterator(Node* node, Node* tail, Node* head)
-    : current(node), tail(tail), head(head)
+List<T>::Iterator::pointer List<T>::Iterator::operator->() const 
 {
+    return &(m_current->m_data);
 }
+
 template<class T>
-List<T>::Iterator::reference List<T>::Iterator::operator*() const {
-    return current->data;
-}
-template<class T>
-List<T>::Iterator::pointer List<T>::Iterator::operator->() const {
-    return &(current->data);
-}
-template<class T>
-List<T>::Iterator List<T>::Iterator::operator++() {
-    current = current->next;
+List<T>::Iterator List<T>::Iterator::operator++() 
+{
+    m_current = m_current->m_next;
     return *this;
 }
+
 template<class T>
-List<T>::Iterator List<T>::Iterator::operator++(int) {
+List<T>::Iterator List<T>::Iterator::operator++(int) 
+{
     Iterator temp = *this;
     ++(*this);
     return temp;
 }
+
 template<class T>
-typename List<T>::Iterator& List<T>::Iterator::operator--() {
-    if (current == nullptr) {
-        // Итератор указывает за пределы списка, перемещаем его на хвост
-        current = tail;
+typename List<T>::Iterator& List<T>::Iterator::operator--() 
+{
+    if (m_current == nullptr) 
+    {
+        m_current = m_tail;
     }
-    else {
-        Node* temp = this->head;
-        while (temp->next != current) {
-            temp = temp->next;
+    else 
+    {
+        Node* temp = this->m_head;
+        while (temp->m_next != m_current) 
+        {
+            temp = temp->m_next;
         }
-        current = temp;
+        m_current = temp;
     }
     return *this;
 }
 
 template<class T>
-typename List<T>::Iterator List<T>::Iterator::operator--(int) {
+typename List<T>::Iterator List<T>::Iterator::operator--(int) 
+{
     Iterator temp = *this;
     --(*this);
     return temp;
 }
+
 template<class T>
-bool List<T>::Iterator::operator==(const Iterator& other) const {
-    return current == other.current && tail == other.tail;;
+bool List<T>::Iterator::operator==(const Iterator& p_other) const 
+{
+    return m_current == p_other.m_current && m_tail == p_other.m_tail;;
 }
+
 template<class T>
-bool List<T>::Iterator::operator!=(const Iterator& other) const {
-    return !(*this == other);
+bool List<T>::Iterator::operator!=(const Iterator& p_other) const 
+{
+    return !(*this == p_other);
 }
+
 template<class T>
-typename List<T>::Iterator& List<T>::Iterator::operator=(const Iterator& other) {
-    if (this != &other) {
-        current = other.current;
-        head = other.current;
-        tail = other.tail;
+typename List<T>::Iterator& List<T>::Iterator::operator=(const Iterator& p_other) 
+{
+    if (this != &p_other) 
+    {
+        m_current = p_other.m_current;
+        m_head = p_other.m_current;
+        m_tail = p_other.m_tail;
     }
     return *this;
 }
+
 template<class T>
-typename List<T>::Iterator List<T>::begin() const {
-    return Iterator(head, tail, head);
+typename List<T>::Iterator List<T>::begin() const 
+{
+    return Iterator(m_head, m_tail, m_head);
 }
+
 template<class T>
-typename List<T>::Iterator List<T>::end() const {
-    return Iterator(nullptr, tail, head);
+typename List<T>::Iterator List<T>::end() const 
+{
+    return Iterator(nullptr, m_tail, m_head);
 }

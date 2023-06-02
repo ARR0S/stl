@@ -2,62 +2,73 @@
 #include <utility>
 #include <algorithm>
 template <typename Iterator, typename Predicate>
-Iterator findIf(Iterator beg, Iterator end, Predicate pred)
+Iterator findIf(Iterator p_beg, Iterator p_end, Predicate p_pred)
 {
-    while (beg != end) {
-        if (pred(*beg)) {
-            return beg;
+    while (p_beg != p_end) 
+    {
+        if (p_pred(*p_beg)) 
+        {
+            return p_beg;
         }
-        ++beg;
+        ++p_beg;
     }
-    return end;
+    return p_end;
 }
 
 template <typename Iterator>
-Iterator minElement(Iterator beg, Iterator end)
+Iterator minElement(Iterator p_beg, Iterator p_end)
 {
-    Iterator minIter = beg;
-    ++beg;
-    while (beg != end) {
-        if (*beg < *minIter) {
-            minIter = beg;
+    Iterator minIter = p_beg;
+    ++p_beg;
+    while (p_beg != p_end) 
+    {
+        if (*p_beg < *minIter) 
+        {
+            minIter = p_beg;
         }
-        ++beg;
+        ++p_beg;
     }
     return minIter;
 }
 
 template <typename Iterator>
-Iterator maxElement(Iterator beg, Iterator end)
+Iterator maxElement(Iterator p_beg, Iterator p_end)
 {
-    Iterator maxIter = beg;
-    ++beg;
-    while (beg != end) {
-        if (*beg > *maxIter) {
-            maxIter = beg;
+    Iterator maxIter = p_beg;
+    ++p_beg;
+    while (p_beg != p_end) 
+    {
+        if (*p_beg > *maxIter) 
+        {
+            maxIter = p_beg;
         }
-        ++beg;
+        ++p_beg;
     }
     return maxIter;
 }
 template <typename Iterator, typename Operation>
-void forEach(Iterator begin, Iterator end, Operation op) {
-        for (Iterator it = begin; it != end; ++it) {
-            op(*it);
+void forEach(Iterator p_begin, Iterator p_end, Operation p_op) 
+{
+        for (Iterator it = p_begin; it != p_end; ++it) 
+        {
+            p_op(*it);
         }
 }
 
 template <typename Iterator, typename Operation>
-void Sort(Iterator beg, Iterator end, Operation comp)
+void Sort(Iterator p_beg, Iterator p_end, Operation p_comp)
 {
     bool swapped = true;
-    while (swapped) {
+    while (swapped) 
+    {
         swapped = false;
-        Iterator current = beg;
+        Iterator current = p_beg;
         Iterator next = ++current;
-        current = beg;
-        while (next != end) {
-            if (comp(*next, *current)) {
+        current = p_beg;
+        while (next != p_end) 
+        {
+            if (p_comp(*next, *current)) 
+            {
                 std::iter_swap(next, current);
             }
             ++current;
@@ -67,17 +78,17 @@ void Sort(Iterator beg, Iterator end, Operation comp)
 }
 
 template <typename InputIt, typename OutputIt, typename Predicate>
-OutputIt copyIf(InputIt sourceBeg, InputIt sourceEnd, OutputIt destBeg, Predicate pred)
+OutputIt copyIf(InputIt p_sourceBeg, InputIt p_sourceEnd, OutputIt p_destBeg, Predicate p_pred)
 {
-    while (sourceBeg != sourceEnd)
+    while (p_sourceBeg != p_sourceEnd)
     {
-        if (pred(*sourceBeg))
+        if (p_pred(*p_sourceBeg))
         {
-            *destBeg = *sourceBeg;
-            ++destBeg;
+            *p_destBeg = *p_sourceBeg;
+            ++p_destBeg;
         }
-        ++sourceBeg;
+        ++p_sourceBeg;
     }
-    return destBeg;
+    return p_destBeg;
 }
 

@@ -168,7 +168,7 @@ int main()
         });
     std::cout << "Size of container: " << cont_3.size();
     cont_2.erase(++cont_2.begin());
-    std::cout << "\n\nContainer cont_2 after deletion 2nd with iterator element:\n";
+    std::cout << "\n\nContainer cont_2 after deletion 2nd element with iterator:\n";
     forEach(cont_2.begin(), cont_2.end(), [](auto& item) {
         const Goods& goods = item.second;
         std::cout << "ID: " << goods.m_id << ", Name: " << goods.m_name << ", Manufacturer: "
@@ -177,7 +177,7 @@ int main()
         });
     std::cout << "Size of container: " << cont_2.size();
     cont_2.erase(5);
-    std::cout << "\n\nContainer cont_2 after deletion with key element:\n";
+    std::cout << "\n\nContainer cont_2 after deletion element with key:\n";
     forEach(cont_2.begin(), cont_2.end(), [](auto& item) {
         const Goods& goods = item.second;
         std::cout << "ID: " << goods.m_id << ", Name: " << goods.m_name << ", Manufacturer: "
